@@ -11,10 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.Scanner;
-import java.util.Set;
-import java.util.StringTokenizer;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -224,24 +221,24 @@ public class lab2 {
         frame.add(forResetButton);
     }
     public static void addTextArea() {
-        JLabel holderForTextArea = new JLabel();
+        JScrollPane scroll;
         Font font = new Font("Rockwell", Font.BOLD, 20);
-        holderForTextArea.setSize(1027,768);
         textArea.setBounds(100,330,310,40);
         textArea.setEditable(false);
         textArea.setFont(font);
-        holderForTextArea.add(textArea);
-        frame.add(holderForTextArea);
+        scroll = new JScrollPane(textArea);
+        scroll.setBounds(100,330,310,40);
+        frame.add(scroll);
     }
     public static void addTextField() {
-        JLabel holderForTextField = new JLabel();
+        JScrollPane scroll;
         Font font = new Font("Rockwell", Font.BOLD, 18);
-        holderForTextField.setSize(1027,768);
         textField.setBounds(100,30,450,50);
         textField.setEditable(false);
         textField.setFont(font);
-        holderForTextField.add(textField);
-        frame.add(holderForTextField);
+        scroll = new JScrollPane(textField);
+        scroll.setBounds(100,30,450,50);
+        frame.add(scroll);
     }
     public static void getNumAsString(String val) {
         fieldValue += val;
