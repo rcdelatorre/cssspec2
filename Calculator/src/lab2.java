@@ -38,7 +38,7 @@ public class lab2 {
     public static void addButtons() {
         Font font = new Font("Rockwell", Font.BOLD, 20);
         JLabel copyright = new JLabel();
-        copyright.setBounds(560,390,100,50);
+        copyright.setBounds(465,385,100,50);
         copyright.setText("© Dela Torre");
         copyright.setForeground(Color.white);
         frame.add(copyright);
@@ -60,7 +60,7 @@ public class lab2 {
             numbers[i] = new JButton();
             numbers[i].setFont(font);
             numbers[i].setText(numbersAndSpecialCharArray[i]);
-            numbers[i].setBackground(new Color(0,139,139));
+            numbers[i].setBackground(Color.cyan);
             if (i >= 3 && i % 3 == 0) {
                 yForNum += 55;
                 xForNum = 100;
@@ -202,7 +202,7 @@ public class lab2 {
         
         JButton reset = new JButton();
         JLabel forResetButton = new JLabel();
-        forEqualButton.setSize(1027,768);
+        forResetButton.setSize(1027,768);
         reset.setText("AC");
         reset.setFont(font);
         reset.setBounds(310,265,100,50);
@@ -219,15 +219,53 @@ public class lab2 {
         }); 
         forResetButton.add(reset);
         frame.add(forResetButton);
+        
+        //negative sign button
+        
+        JButton negativeSign = new JButton();
+        JLabel forNegativeSignButton = new JLabel();
+        forNegativeSignButton.setSize(1027,768);
+        negativeSign.setText("(-)");
+        negativeSign.setFont(font);
+        negativeSign.setBounds(100,320,100,50);
+        negativeSign.setBackground(new Color(0,139,139));
+        negativeSign.addActionListener(new ActionListener() {
+                
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                
+                }
+        }); 
+        forNegativeSignButton.add(negativeSign);
+        frame.add(forNegativeSignButton);
+        
+        //delete individual char button
+        
+        JButton delete = new JButton();
+        JLabel forDeleteButton = new JLabel();
+        forDeleteButton.setSize(1027,768);
+        delete.setText("DEL");
+        delete.setFont(font);
+        delete.setBounds(310,320,100,50);
+        delete.setBackground(new Color(0,139,139));
+        delete.addActionListener(new ActionListener() {
+                
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+                }
+        }); 
+        forDeleteButton.add(delete);
+        frame.add(forDeleteButton);
     }
     public static void addTextArea() {
         JScrollPane scroll;
         Font font = new Font("Rockwell", Font.BOLD, 20);
-        textArea.setBounds(100,330,310,40);
+        textArea.setBounds(100,390,310,40);
         textArea.setEditable(false);
         textArea.setFont(font);
         scroll = new JScrollPane(textArea);
-        scroll.setBounds(100,330,310,40);
+        scroll.setBounds(100,390,310,40);
         frame.add(scroll);
     }
     public static void addTextField() {
@@ -351,7 +389,7 @@ public class lab2 {
         addTextArea();
         addTextField();
         addButtons();
-        frame.setSize(660, 468);
+        frame.setSize(660, 500);
         frame.getContentPane().setBackground(Color.DARK_GRAY);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(3);
