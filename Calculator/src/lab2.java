@@ -35,6 +35,7 @@ public class lab2 {
     static JTextField textField = new JTextField();
     static String fieldValue="";
     static String finalAns="";
+    static boolean negateNext=false;
     public static void addButtons() {
         Font font = new Font("Rockwell", Font.BOLD, 20);
         JLabel copyright = new JLabel();
@@ -135,17 +136,17 @@ public class lab2 {
                 }
                 System.out.println("");
                 ArrayList <Character> operators = new ArrayList();
-                ArrayList <Double> operands = new ArrayList();
+                ArrayList <String> operands = new ArrayList();
                 for(int i=0;i<temp.length();i++) {
                     if(isOperator(temp.charAt(i))) {
                         operators.add(temp.charAt(i));
                     }
                 }
-                for(int i=0;i<operators.size();i++) {
-                    System.out.println(operators.get(i));            
+                for(int i=0;i<arrayComp.length;i++) {
+                    arrayComp[i] = arrayComp[i].replaceAll("_", "-");
                 }
                 for(int i=0;i<arrayComp.length;i++) {
-                    operands.add(Double.parseDouble(arrayComp[i]));
+                    operands.add(arrayComp[i]);
                 }
                 int index = getPrecedence(temp);
                 double answer=0;
@@ -171,9 +172,10 @@ public class lab2 {
                 operators.remove(index);
                 operands.remove(index);
                 operands.remove(index);
-                operands.add(index,answer);
-
-                answerText = answer+" ";
+                String tmp = answer+"";
+                tmp = tmp.replaceAll("-","_");
+                operands.add(index,tmp);
+                answerText = tmp.replaceAll("-", "_");
                 for(int i=0;i<operators.size();i++) {
                     if(i==0) {
                         answerText = "";
@@ -233,7 +235,45 @@ public class lab2 {
                 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                
+                if(fieldValue.equals("")&&!negateNext) {
+                    negateNext = true;
+                }
+                else
+                if(fieldValue.equals("")&&negateNext) {
+                    negateNext = false;
+                }
+                else
+                if(isOperator(fieldValue.charAt(fieldValue.length() - 1))&&negateNext) {
+                    negateNext = false;
+                }
+                else
+                if(isOperator(fieldValue.charAt(fieldValue.length() - 1))&&!negateNext) {
+                    negateNext = true;
+                }
+                else {
+                String arrayComp[] = fieldValue.split("-|\\+|\\/|\\*");       
+                CharSequence temp = fieldValue;   
+                ArrayList <Character> operators = new ArrayList();
+                ArrayList <Double> operands = new ArrayList();
+                for(int i=0;i<temp.length();i++) {
+                    if(isOperator(temp.charAt(i))) {
+                        operators.add(temp.charAt(i));
+                    }
+                }
+                if(arrayComp[arrayComp.length-1].contains("_")) {
+                    arrayComp[arrayComp.length-1] = arrayComp[arrayComp.length-1].replace("_", "");
+                }
+                else {
+                    arrayComp[arrayComp.length-1] = "_"+arrayComp[arrayComp.length-1];
+                }
+                fieldValue = "";
+                fieldValue+=arrayComp[0];
+                for(int i=0;i<operators.size();i++) {
+                    fieldValue+=operators.get(i);
+                    fieldValue+=arrayComp[i+1];
+                }
+                }
+                displayValue();
                 }
         }); 
         forNegativeSignButton.add(negativeSign);
@@ -252,7 +292,14 @@ public class lab2 {
                 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-
+                    try {
+                    CharSequence seq = fieldValue;
+                    seq = seq.subSequence(0, seq.length()-1);
+                    fieldValue = seq.toString();
+                    displayValue();
+                     }catch (Exception ex) {
+                     //do nothing
+                     }
                 }
         }); 
         forDeleteButton.add(delete);
@@ -279,7 +326,30 @@ public class lab2 {
         frame.add(scroll);
     }
     public static void getNumAsString(String val) {
-        fieldValue += val;
+        if(val.equals(".")) {
+        CharSequence checker = fieldValue;
+        boolean hasDot=false;
+        for(int i=0;i<checker.length();i++) {
+            if(checker.charAt(i)=='.') {
+                hasDot = true;
+            }
+            else if(isOperator(checker.charAt(i))) {
+                hasDot=false;
+            }
+        }
+        if(!hasDot) {
+            fieldValue+=".";
+        }
+        }
+        else {
+        if(negateNext) {
+            fieldValue+= "_" + val;
+            negateNext=false;
+        }
+        else {
+            fieldValue+= val;
+        }
+        }
         displayValue();
     }
     public static void getOper(String operators) {
@@ -289,7 +359,6 @@ public class lab2 {
             checker = checker.subSequence(0,checker.length()-2);
             fieldValue = checker.toString();
             fieldValue +=operators;
-            System.out.println("ha");
         }
         else {
             fieldValue+=operators;
@@ -300,16 +369,16 @@ public class lab2 {
       }
     }
     public static void displayValue() {
-        if(fieldValue.contains("E")) {
+        textArea.setText(fieldValue.replaceAll("_","-"));
+        if(finalAns.contains("E")) {
             DecimalFormat df = new DecimalFormat("#");
             df.setMaximumFractionDigits(8);
-            System.out.println(df.format(Double.parseDouble(fieldValue)));            
-            fieldValue = df.format(Double.parseDouble(fieldValue))+"";
-            textArea.setText(fieldValue+ "");
+            System.out.println(df.format(Double.parseDouble(finalAns)));            
+            finalAns = df.format(Double.parseDouble(finalAns.replaceAll("_","-")))+"";
+            textField.setText(finalAns+ "");
         }
         else
-        textField.setText(finalAns);
-        textArea.setText(fieldValue);
+        textField.setText(finalAns.replaceAll("_","-"));
     }
     public static boolean isOperator(char toTest) {
         switch(toTest) {
